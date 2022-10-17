@@ -86,6 +86,9 @@ else
 
 fi
 
+#On trie par defaut sur le nom
+[ $nom = 0 ] && nom=1
+
 echo "rActive : $rActive"
 echo "decroissant : $decroissant"
 echo "option : $option"
