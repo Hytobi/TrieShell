@@ -1,0 +1,73 @@
+init : ok sauf pour l'ordre d'entré
+faire les tries
+
+Que se passe t il si je met 4 arguments mais pas les bons ?
+
+utiliser stat :
+
+Les informations que nous obtenons stat est:
+
+    Fichier: Le nom du fichier. Habituellement, c’est le même que le nom que nous avons passé stat sur la ligne de commande, mais cela peut être différent si nous regardons un lien symbolique.
+    Taille: La taille du fichier en octets.
+    Blocs: Le nombre de blocs du système de fichiers requis par le fichier pour être stocké sur le disque dur.
+    Bloc IO: La taille d’un bloc de système de fichiers.
+    Type de fichier: Le type d’objet décrit par les métadonnées. Les types les plus courants sont les fichiers et les répertoires, mais ils peuvent également être des liens, des sockets ou des tubes nommés.
+    Dispositif: Le numéro de l’appareil dans hexadécimal et décimal. Il s’agit de l’ID du disque dur sur lequel le fichier est stocké.
+    Inode: Le numéro d’inode. Autrement dit, le numéro d’identification de cet inode. Ensemble, le numéro d’inode et le numéro de périphérique identifient de manière unique un fichier.
+    Liens: Ce nombre indique le nombre de liens physiques pointant vers ce fichier. Chaque lien physique a son propre inode. Donc, une autre façon de penser à ce chiffre est de savoir combien d’inœuds pointent vers ce fichier. Chaque fois qu’un lien physique est créé ou supprimé, ce nombre sera ajusté à la hausse ou à la baisse. Lorsqu’il atteint zéro, le fichier lui-même a été supprimé et l’inode est supprimé. Si tu utilises stat sur un répertoire, ce nombre représente le nombre de fichiers dans le répertoire, y compris le «.» l’entrée pour le répertoire courant et l’entrée «..» pour le répertoire parent.
+    Accès: Les autorisations de fichier sont affichées dans leur octal et traditionnel rwx (lire, écrire, exécuter des formats).
+    Uid: ID utilisateur et nom de compte du propriétaire.
+    Gid: ID de groupe et nom de compte du propriétaire.
+    Accès: Horodatage d’accès. Pas aussi simple que cela puisse paraître. Les distributions Linux modernes utilisent un schéma appelé relatime, qui essaie de optimiser les écritures disque dur nécessaires à la mise à jour du temps d’accès. En termes simples, l’heure d’accès est mise à jour si elle est antérieure à l’heure modifiée.
+    Modifier: L’horodatage de la modification. Il s’agit de l’heure à laquelle les fichiers ont été modifiés pour la dernière fois. (Par chance, le contenu de ce fichier a été modifié pour la dernière fois il y a quatre ans jour pour jour.)
+    Changement: L’horodatage du changement. Il s’agit de l’heure à laquelle le fichier a été modifié pour la dernière fois. Si vous modifiez un fichier en définissant de nouvelles autorisations de fichier, l’horodatage de modification sera mis à jour (car le fichier a changé), mais l’horodatage modifié ne sera pas mis à jour (car le fichier n’a pas été modifié).
+    Naissance: Réservé pour afficher la date de création originale du fichier, mais ceci n’est pas implémenté sous Linux.
+
+
+
+    %une / %a: Les droits d’accès en octal.
+    %UNE / %A: Les droits d’accès sous une forme lisible par l’homme (rwx).
+    % b: Le nombre de blocs alloués.
+    % B: La taille en octets de chaque bloc.
+    %ré: Le numéro de l’appareil en décimal.
+    %RÉ: Le numéro de périphérique en hexadécimal.
+    %F: Le mode brut en hexadécimal.
+    %F Le type de fichier.
+    %g: ID de groupe du propriétaire.
+    %G: Le nom du groupe du propriétaire.
+    % h: Le nombre de liens physiques.
+    %je: Le numéro d’inode.
+    % m: Le point de montage.
+    % n: Le nom du fichier.
+    % N: Le nom du fichier cité, avec un nom de fichier déréférencé s’il s’agit d’un lien symbolique.
+    % o: Indice de taille de transfert d’E / S optimale.
+    % s: La taille totale, en octets.
+    % t: Le type de périphérique principal en hexadécimal, pour les fichiers spéciaux de périphérique caractère / bloc.
+    % T: Le type de périphérique mineur en hexadécimal, pour les fichiers spéciaux de périphérique caractère / bloc.
+    % u: L’ID utilisateur du propriétaire.
+    % U: Le nom d’utilisateur du propriétaire.
+    % w: L’heure de naissance du fichier, lisible par l’homme, ou un tiret «-» si inconnu.
+    % W: L’heure de naissance du fichier, secondes depuis l’époque; 0 si inconnu.
+    %X: L’heure du dernier accès, lisible par l’homme.
+    %X: L’heure du dernier accès, en secondes depuis l’époque.
+    % y: Heure de la dernière modification des données, lisible par l’homme.
+    % Y: Heure de la dernière modification des données, en secondes depuis l’époque.
+    % z: L’heure du dernier changement d’état, lisible par l’homme.
+    % Z: L’heure du dernier changement d’état, en secondes depuis l’époque.
+
+L ‘«époque» est le Époque Unix, qui a eu lieu le 1970-01-01 00:00:00 +0000 (UTC).
+
+Pour les systèmes de fichiers, les séquences de format sont:
+
+    %une: Le nombre de blocs gratuits disponibles pour les utilisateurs réguliers (non root).
+    % b: Le total des blocs de données dans le système de fichiers.
+    % c: Le total des inœuds dans le système de fichiers.
+    %ré: Le nombre d’i-noeuds libres dans le système de fichiers.
+    %F: Le nombre de blocs libres dans le système de fichiers.
+    %je: L’ID du système de fichiers en hexadécimal.
+    % l: La longueur maximale des noms de fichiers.
+    % n: Le nom du fichier.
+    % s: La taille du bloc (la taille d’écriture optimale).
+    % S: La taille des blocs du système de fichiers (pour le nombre de blocs).
+    % t: Le type de système de fichiers en hexadécimal.
+    % T: type de système de fichiers sous forme lisible par l’homme.
