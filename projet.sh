@@ -54,6 +54,18 @@ rep=.           # repertoire courant par defaut
 #Si il reste des arguments c'est qu'il y a une erreur
 [ $# -gt 0 ] && echo "Usage : $0 [-R] [-d] [-nsmletpg] <rep>" && exit 1
 
+#Si tout les parametres sont bon on lance le programme
+chaineFINAL=""
+
+#On doit recupérer tout ce qui est dans le repertoire
+if [ $rActive -eq 1 ]
+then
+    #On recupere tout ce qui est dans le repertoire
+    chaineFINAL=`./util/recupRec.sh $rep`
+else
+    #On recupere tout ce qui est dans le repertoire
+    chaineFINAL=`stat -c "%n " $rep/*`
+fi
 
 #Decortiquer -nsmletpg
 if [ $option != 0 ]
@@ -62,59 +74,54 @@ then
     do
         # ${2:$i:1} dans le 2eme argument, i pour l'indice dans la chaine, 1 pour la taille de la chaine qu'on recupere
         case ${option:$i:1} in 
-            n) nom=1;;     
-            s) taille=1;;
-            m) modif=1;;
-            l) ligne=1;;
-            e) extension=1;;
-            t) type=1;;
-            p) proprietaire=1;;
-            g) groupe=1;;
-            #n) chaineFINAL=`./trie_n.sh chaineFINAL`;;
-            #s) chaineFINAL=`./trie_s.sh chaineFINAL`;;
-            #m) chaineFINAL=`./trie_m.sh chaineFINAL`;;
-            #l) chaineFINAL=`./trie_l.sh chaineFINAL`;;
-            #e) chaineFINAL=`./trie_e.sh chaineFINAL`;;
-            #t) chaineFINAL=`./trie_t.sh chaineFINAL`;;
-            #p) chaineFINAL=`./trie_p.sh chaineFINAL`;;
-            #g) chaineFINAL=`./trie_g.sh chaineFINAL`;;
+            n) chaineFINAL=`./tris/tri_n.sh chaineFINAL`;;
+            s) chaineFINAL=`./tris/tri_s.sh chaineFINAL`;;
+            m) chaineFINAL=`./tris/tri_m.sh chaineFINAL`;;
+            l) chaineFINAL=`./tris/tri_l.sh chaineFINAL`;;
+            e) chaineFINAL=`./tris/tri_e.sh chaineFINAL`;;
+            t) chaineFINAL=`./tris/tri_t.sh chaineFINAL`;;
+            p) chaineFINAL=`./tris/tri_p.sh chaineFINAL`;;
+            g) chaineFINAL=`./tris/tri_g.sh chaineFINAL`;;
         esac
     done
 else
     #Si on a pas d'option on trie par defaut sur le nom
-    nom=1
-
+    chaineFINAL=`./tris/tri_n.sh $chaineFINAL`
 fi
 
-#On trie par defaut sur le nom
-[ $nom = 0 ] && nom=1
+#Si decroissant est a 1 on inverse le resultat
+chaineDECROISSANT=""
+mot=""
+if [ $decroissant = 1 ]
+then
+    for (( i=${#chaineFINAL}; i>=0; i-- ))
+    do
+        if [ "${chaineFINAL:$i:1}" != " " ]
+        then
+            mot=${chaineFINAL:$i:1}$mot
+        else
+            chaineDECROISSANT=$chaineDECROISSANT$mot" "
+            mot=""
+        fi
+    done
+    chaineDECROISSANT=$chaineDECROISSANT$mot
+    chaineFINAL=$chaineDECROISSANT
+fi
 
-echo "rActive : $rActive"
-echo "decroissant : $decroissant"
-echo "option : $option"
-echo "rep : $rep"
 
 
-#On affiche
+#On affiche en se simplifiant la vie
+for mot in $chaineFINAL 
+do
+    echo $mot
+done
+exit 0
+
+#On affiche en se compliquant la vie
 i=0
-# a un endroit on a une chaine avec tout les nom des fichiers
 while [ $i -lt ${#chaineFINAL} ]
 do
-    pr=${chaineFINAL:$i:1}
-    [ pr != " " ] && echo -n ${chaineFINAL:$i:1} && i=[$i+1] && continue
+    pr="${chaineFINAL:$i:1}"
+    [ "$pr" != " " ] && echo -n ${chaineFINAL:$i:1} && i=$[$i+1] && continue
     i=$[$i+1] && echo
 done
-
-
-
-#On rentre dans les autres dossiers si -R
-#if [ $rActive = 1 ]
-#then
-#    for dossier in $(ls -d $rep/*)
- #   do
-  #      if [ -d $dossier ]
-   #     then
-    #        $0 $option $dossier
-     #   fi
-   # done
-#fi

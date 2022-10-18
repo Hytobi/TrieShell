@@ -33,6 +33,5 @@ do
 
 
 
-
 # On affiche la chaine
-echo $chaine
+echo $chaineRETOUR

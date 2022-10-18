@@ -1,7 +1,30 @@
-init : ok sauf pour l'ordre d'entré
-faire les tries
 
-Que se passe t il si je met 4 arguments mais pas les bons ?
+
+-d   -> fini
+-R   -> fini
+
+#   -n : en cours
+#   -s : 
+#   -m : 
+#   -l : 
+#   -e : 
+#   -t : 
+#   -p : en cours
+#   -g : 
+
+
+# 5 – fait
+# 6 – fait
+# 7 – fait
+
+
+
+
+
+
+
+
+
 
 utiliser stat :
 
