@@ -11,27 +11,33 @@ j=0         #pour se deplacer dans chaineNOM
 k=0
 cmpESP=0    #pour compter les espaces dans chainePROPRIO et nous reperer dans chaineNOM
 
-# on trie la chaine en fonction du nom du proprietaire sans utiliser ls et sort
-chaineNOM=`stat -c "%n" $@`     # On récupère le nom du fichier 
-chainePROPRIO=`stat -c "%U" $@` # On récupère le nom du propriétaire
 
+chaineNOM="$@"     # On récupère le nom du fichier 
+chainePROPRIO="" # On récupère le nom du propriétaire
 
-# On tri chainePROPRIO, si on change le proprio de place on change le nom de fichier corespondant de place
+echo $chaineNOM
 
-#On recupere le premier proprietere dans la liste pour le comparer aux autres
-while [ ${chainePROPRIO:$i:1} != " " ]
+maChaine="$@"           # $@ contient deja tout les noms de fichier
+chaineRETOUR=""         # La chaine qu'on renvoie
+nbMot=0                 # Nombre de mot dans la chaine   
+i=0
+
+# On recupère le nombre de mot dans la chaine
+nbMot=`./util/compteMot.sh "$@"`
+
+#On recupère le nom du propriétaire de chaque fichier
+while [ $i -lt ${#maChaine} ]
 do
-    interPROPRIO1="$interPROPRIO${chainePROPRIO:$i:1}"
-    i=$[$i+1]
+    while [ "${maChaine:$i:3}" != " //" ]
+    do
+        i=$[$i+1]
+    done
+    mot=${maChaine:$j:$[$i-$j]}
+    echo $mot
+    chainePROPRIO=$chainePROPRIO`stat -c "%U // " "$mot"` 
+    j=$[$i+4] && i=$[$i+3]
 done
-
-# Tant que ma chaine retour n'est pas a la meme taille que ma chaine nom, on a du travail
-while [ ${#chaineRETOUR} != ${#chaineNOM} ]
-do
-    #chercher le proprio avec le nom le plus petit dans l'ordre alpha
-    
-
-
+echo $chainePROPRIO
 
 # On affiche la chaine
 echo $chaineRETOUR

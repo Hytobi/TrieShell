@@ -1,9 +1,14 @@
 
+dans recupNom.sh : si mon chemin s'appelle "dossier/truc dossier/test" alors il le comprend comme etant
+2 fchemin distinct 
+Pour remedier a ce probleme, je separe 2 noms de dossier par " // " car/ est un caractère
+interdit dans le nom de dossier (car utilisé pour les chemin)
+Seul probleme: je doit parcourir toute la chaine je ne peux pas faire de shift
 
 -d   -> fini
 -R   -> fini
 
-#   -n : en cours
+#   -n : fini
 #   -s : 
 #   -m : 
 #   -l : 
@@ -17,8 +22,10 @@
 # 6 – fait
 # 7 – fait
 
-
-
+decouverte de probleme :
+quand je l'utilise depuis le rep projetShell tout va bien; mais si je le fait depuis un autre fichier
+la ou j'ai mis ./util.... ne fonctionnera pas car pas le meme rep courrant
+idée : mettre $0 ????
 
 
 

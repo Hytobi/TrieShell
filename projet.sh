@@ -62,9 +62,11 @@ if [ $rActive -eq 1 ]
 then
     #On recupere tout ce qui est dans le repertoire
     chaineFINAL=`./util/recupRec.sh $rep`
+    chaineFINAL=`./util/chSansRetour.sh $chaineFINAL`" "
 else
     #On recupere tout ce qui est dans le repertoire
-    chaineFINAL=`stat -c "%n " $rep/*`
+    chaineFINAL=`stat -c "%n // " $rep/*`
+    chaineFINAL=`./util/chSansRetour.sh $chaineFINAL`" "
 fi
 
 #Decortiquer -nsmletpg
@@ -74,14 +76,14 @@ then
     do
         # ${2:$i:1} dans le 2eme argument, i pour l'indice dans la chaine, 1 pour la taille de la chaine qu'on recupere
         case ${option:$i:1} in 
-            n) chaineFINAL=`./tris/tri_n.sh chaineFINAL`;;
-            s) chaineFINAL=`./tris/tri_s.sh chaineFINAL`;;
-            m) chaineFINAL=`./tris/tri_m.sh chaineFINAL`;;
-            l) chaineFINAL=`./tris/tri_l.sh chaineFINAL`;;
-            e) chaineFINAL=`./tris/tri_e.sh chaineFINAL`;;
-            t) chaineFINAL=`./tris/tri_t.sh chaineFINAL`;;
-            p) chaineFINAL=`./tris/tri_p.sh chaineFINAL`;;
-            g) chaineFINAL=`./tris/tri_g.sh chaineFINAL`;;
+            n) chaineFINAL=`./tris/tri_n.sh $chaineFINAL`;;
+            s) chaineFINAL=`./tris/tri_s.sh $chaineFINAL`;;
+            m) chaineFINAL=`./tris/tri_m.sh $chaineFINAL`;;
+            l) chaineFINAL=`./tris/tri_l.sh $chaineFINAL`;;
+            e) chaineFINAL=`./tris/tri_e.sh $chaineFINAL`;;
+            t) chaineFINAL=`./tris/tri_t.sh $chaineFINAL`;;
+            p) chaineFINAL=`./tris/tri_p.sh $chaineFINAL`;;
+            g) chaineFINAL=`./tris/tri_g.sh $chaineFINAL`;;
         esac
     done
 else
@@ -90,38 +92,21 @@ else
 fi
 
 #Si decroissant est a 1 on inverse le resultat
-chaineDECROISSANT=""
-mot=""
-if [ $decroissant = 1 ]
-then
-    for (( i=${#chaineFINAL}; i>=0; i-- ))
-    do
-        if [ "${chaineFINAL:$i:1}" != " " ]
-        then
-            mot=${chaineFINAL:$i:1}$mot
-        else
-            chaineDECROISSANT=$chaineDECROISSANT$mot" "
-            mot=""
-        fi
-    done
-    chaineDECROISSANT=$chaineDECROISSANT$mot
-    chaineFINAL=$chaineDECROISSANT
-fi
+[ $decroissant = 1 ] && chaineFINAL=`./util/inverseChaine.sh $chaineFINAL`
 
-
-
-#On affiche en se simplifiant la vie
-for mot in $chaineFINAL 
-do
-    echo $mot
-done
-exit 0
-
-#On affiche en se compliquant la vie
+#on affiche le resultat
 i=0
+[ $decroissant = 1 ] && j=3 || j=0
 while [ $i -lt ${#chaineFINAL} ]
 do
-    pr="${chaineFINAL:$i:1}"
-    [ "$pr" != " " ] && echo -n ${chaineFINAL:$i:1} && i=$[$i+1] && continue
-    i=$[$i+1] && echo
+    if [ "${chaineFINAL:$i:4}" = " // " ]
+    then
+        k=$[$i-$j]
+        echo ${chaineFINAL:$j:$k}
+        j=$[$i+4] && i=$[$i+5]
+        continue
+    fi
+    i=$[$i+1]
 done
+#[ $decroissant = 1 ] && echo ${chaineFINAL:$j:$[${#chaineFINAL}-$j-3]} && exit 0
+echo ${chaineFINAL:$j:$[${#chaineFINAL}-$j-3]} && exit 0
