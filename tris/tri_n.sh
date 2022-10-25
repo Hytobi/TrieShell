@@ -2,24 +2,22 @@
 
 #   -n : tri suivant le nom des entrées ;
 
+# Test si le nombre de parametre est correct
 [ $# -eq 0 ] && echo "Pas d'arguments" && exit 1
 
 # Initialisation
 maChaine="$@"           # $@ contient deja tout les noms de fichier
 chaineRETOUR=""         # La chaine qu'on renvoie
 nbMot=0                 # Nombre de mot dans la chaine   
-i=0
-
-#motPlusPetit=`./util/recupNom.sh $@`
+i=0                     # Pour parcourir maChaine
 
 # On recupère le nombre de mot dans la chaine
 nbMot=`./util/compteMot.sh $@`
 
-
 # Tant qu'on a pas recupere tout les mots
 while [ $nbMot -gt 0 ]
 do
-    # On recupère le premier mot de la chaine qui sera le plus petit pour le moement
+    # On recupère le premier mot de la chaine qui sera le plus petit pour le momement
     while [ "${maChaine:$i:3}" != " //" ]
     do
         i=$[$i+1]
@@ -59,3 +57,4 @@ done
 
 # On affiche la chaine
 echo $chaineRETOUR
+exit 0

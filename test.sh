@@ -38,3 +38,31 @@ i=0 && j=0
     done
 
 echo $chaineRETOUR
+
+
+
+
+
+
+
+
+
+----------------------
+while [ $nb -lt $nbMot ]
+do
+    while [ "${chainePROPRIO:$i:3}" != " //" ]
+    do
+        i=$[$i+1]
+    done
+    interPROPRIO=${chainePROPRIO:$j:$[$i-$j]}
+    while [ $nb2 -lt $nbMot ]
+    do
+        while [ "${chaineNOM:$k:3}" != " //" ]
+        do
+            k=$[$k+1]
+        done
+        [ `stat -c "%U " "${chaineNOM:$j:$[$k-$j]}"` = "$interPROPRIO" ] && chaineRETOUR=$chaineRETOUR${chaineNOM:$j:$[$k-$j]} 
+        k=$[$k+4] && nb2=$[$nb2+1]
+    done
+    
+done
