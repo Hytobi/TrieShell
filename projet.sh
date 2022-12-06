@@ -77,13 +77,13 @@ then
         # ${2:$i:1} dans le 2eme argument, i pour l'indice dans la chaine, 1 pour la taille de la chaine qu'on recupere
         case ${option:$i:1} in 
             n) chaineFINAL=`./tris/tri_n.sh $chaineFINAL`;;
-            s) chaineFINAL=`./tris/tri_spg.sh "s"$chaineFINAL`;;
-            m) chaineFINAL=`./tris/tri_m.sh $chaineFINAL`;;
+            s) chaineFINAL=`./tris/tri_smpg.sh "s"$chaineFINAL`;;
+            m) chaineFINAL=`./tris/tri_smpg.sh "Y"$chaineFINAL`;;
             l) chaineFINAL=`./tris/tri_l.sh $chaineFINAL`;;
             e) chaineFINAL=`./tris/tri_e.sh $chaineFINAL`;;
-            t) chaineFINAL=`./tris/tri_t.sh $chaineFINAL`;;
-            p) chaineFINAL=`./tris/tri_spg.sh "U"$chaineFINAL`;;
-            g) chaineFINAL=`./tris/tri_spg.sh "G"$chaineFINAL`;;
+            t) chaineFINAL=`./tris/tri_t.sh "l" $chaineFINAL`;;
+            p) chaineFINAL=`./tris/tri_smpg.sh "U"$chaineFINAL`;;
+            g) chaineFINAL=`./tris/tri_smpg.sh "G"$chaineFINAL`;;
         esac
     done
 else
