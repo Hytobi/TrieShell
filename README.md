@@ -20,3 +20,5 @@
  4)La fonctions stat permet de récupérer des éléments d'un fichier/dossier grâce a des options;
    c'est pour cela qu'ils sont traité dans le même fichier de tri en rajoutant au début du parametre le mode
    on aurait pu passer à ce ficier deux parametres "option" et "chaine" mais c'etait moins amusant.
+
+5) On trie toujours du plus petit vers le plus grand

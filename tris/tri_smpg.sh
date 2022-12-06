@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# Programme qui trie les parametres tri suivant le nom du propriétaire de l’entrée ;
+# On trie toujours du plus petit vers le plus grand
+#   -s : tri suivant la taille des entrées ;
+#   -m : tri suivant la date de dernière modification des entrées ;
+#   -p : tri suivant le nom du propriétaire de l’entrée ;
+#   -g : tri suivant le groupe du propriétaire de l’entrée.
 
 # Test si le nombre de parametre est correct
 [ $# -eq 0 ] && echo "Pas d'arguments" && exit 1
@@ -72,13 +76,7 @@ do
     done
 done
 
-if [ $mode = "%Y" ] 
-then 
-    # On inverse la chaine de retour
-    chaineRETOUR=`./util/inverseChaine.sh $chaineRETOUR`
-    echo ${chaineRETOUR:3:$[${#chaineRETOUR}-1]}
-else
-    # On affiche la chaine de retour (en enlevant le dernier espace causé par la ligne de code 56)
-    echo ${chaineRETOUR:0:$[${#chaineRETOUR}-1]}
-fi
+# On affiche la chaine de retour (en enlevant le dernier espace causé par la ligne de code 57)
+echo ${chaineRETOUR:0:$[${#chaineRETOUR}-1]}
+
 exit 0

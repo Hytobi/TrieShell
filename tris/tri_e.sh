@@ -1,15 +1,19 @@
 #!/bin/bash
 
-#   -l : tri suivant le nombre de lignes des entrées ;
+#   -e : tri suivant l’extension des entrées (caractères se trouvant après le dernier point du nom de l’entrée ;
+#        les répertoires n’ont pas d’extension) ;
 
-#!/bin/bash
 # Test si le nombre de parametre est correct
 [ $# -eq 0 ] && echo "Pas d'arguments" && exit 1
 
 #initialisation
 chaineRETOUR=""     # La chaine qui sera retournée         
 chaineNOM="$@"      # On récupère les noms des fichiers / dossier etc... 
-chaineINTER=""      # Cette chaine stock les proprietaires (User/groupe) ou la taille selon le tri
+chaineEXT=""      # Cette chaine stock les fichiers qui ont une extension
+chaineNONEXT=""      # Cette chaine stock les fichiers qui n'ont pas d'extension
+lesExt=""      # Cette chaine stock les extensions
+aExt=0 #boolean qui indique si le fichier a une extension
+coordPoint=0 #Coordonnée du point dans le nom du fichier
 
 #On recupère les noms du propriétaire ou la taille selon le tri
 i=0 && j=0
@@ -17,67 +21,69 @@ i=0 && j=0
 while [ $i -lt ${#chaineNOM} ]
 do
     # Tant qu'on a pas de separateur on incremente i
-    while [ "${chaineNOM:$i:3}" != " //" ] ; do i=$[$i+1] ; done
+    while [ "${chaineNOM:$i:3}" != " //" ] 
+    do 
+        i=$[$i+1]
+        [ "${chaineNOM:$i:1}" == "." ] && [ "${chaineNOM:$i:2}" != "./" ] && [ $aExt -eq 0 ] && aExt=1 && coordPoint=$i
+    done
     
-    if [ -d "${chaineNOM:$j:$[$i-$j]}" ] 
+    if [ $aExt -eq 1 ]
     then
-        rep="$rep${chaineNOM:$j:$[$i-$j]} // "
+        chaineEXT="$chaineEXT${chaineNOM:$j:$[$i-$j]} // "
+        lesExt="$lesExt${chaineNOM:$coordPoint:$[$i-$coordPoint]} // "
     else
-        chaineINTER="$chaineINTER`basename "${chaineNOM:$j:$[$i-$j]}"|sed 's/.*\.//g'` // "
+        chaineNONEXT="$chaineNONEXT${chaineNOM:$j:$[$i-$j]} // "
     fi
-    j=$[$i+4] && i=$[$i+3]
+    j=$[$i+4] && i=$[$i+3] && aExt=0
+done
+
+#on supprime les doublons
+i=0 && j=0 && deja=0
+lesExtint=""
+for mot in $lesExt
+do
+    [ "$mot" = "//" ] && continue
+    for mot2 in $lesExtint
+    do
+        [ "$mot" = "$mot2" ] && deja=1 && break
+    done
+    [ $deja -eq 1 ] && deja=0 && continue
+    lesExtint="$lesExtint$mot // "
+    
 done
 
 # On affiche la chaine
-chaineINTER=`./tris/tri_n.sh $chaineINTER`
+lesExtint=`./tris/tri_n.sh $lesExtint`
+
 
 # On recupère le nombre de mot dans la chaine
-nbMot=`./util/compteMot.sh $chaineINTER`
-i=0 && j=0 && tkmin=0 && tk=0
+nbMot=`./util/compteMot.sh $chaineEXT`
+i=0 && j=0 
 # Tant qu'on a pas recupere tout les mots
 while [ $nbMot -gt 0 ]
 do
-    # On recupère le premier mot de la chaine qui sera le plus petit pour le momement
-    while [ "${chaineINTER:$i:1}" != " " ]
+    for ext in $lesExtint
     do
-        i=$[$i+1]
-        tkmin=$[$tkmin+1]
-    done
-    kmin=${chaineINTER:0:$i}
-    
-    while [ "${chaineINTER:$i:3}" != " //" ]
-    do
-        i=$[$i+1]
-    done
-    # On sauvegard le mot, sa position et la position du mot suivant
-    motPlusPetit=${chaineINTER:0:$i} && iMin=$i && jMin=0 && j=$[$i+4] && i=$[$i+4]
-
-    # $i est a la position du mot suivant, alors tant que $i est inferieur a la taille de la chaine
-    while [ $i -lt ${#chaineINTER} ]
-    do
-        # On recupere le mot
-        tk=0
-        while [ "${chaineINTER:$i:1}" != " " ]
+        [ "$ext" = "//" ] && continue
+        
+        while [ $i -lt ${#chaineEXT} ]
         do
-            i=$[$i+1]
-            tk=$[$tk+1]
+            while [ "${chaineEXT:$i:3}" != " //" ]
+            do
+                i=$[$i+1]
+                [ "${chaineEXT:$i:1}" == "." ] && [ "${chaineEXT:$i:2}" != "./" ] && coordPoint=$i
+            done
+            # $j est la position de la premiere lettre du mot et $i la pos de la derniere
+            mot=${chaineEXT:$j:$[$i-$j]}
+            if [ "${chaineEXT:$coordPoint:$[$i-$coordPoint]}" = "$ext" ]
+            then
+                chaineRETOUR="$chaineRETOUR$mot // "
+                nbMot=$[$nbMot-1]
+            fi
+            j=$[$i+4] && i=$[$i+4]
         done
-        k=${chaineINTER:$j:$[$i-$j]}
-        while [ "${chaineINTER:$i:3}" != " //" ]
-        do
-            i=$[$i+1]
-        done
-        # $j est la position de la premiere lettre du mot et $i la pos de la derniere
-        mot=${chaineINTER:$j:$[$i-$j]}
-        echo "- $mot -"
-        echo "-- `basename "${chaineNOM:$j:$[$i-$j]}"|sed 's/.*\.//g'` --"
-        if [ $mot = " `basename "${chaineNOM:$j:$[$i-$j]}"|sed 's/.*\.//g'` " ]
-        then
-        echo "aa"
-        fi
-        j=$[$i+4] && i=$[$i+4]
+        i=0 && j=0 
     done
-    nbMot=$[$nbMot-1] && i=0 && j=0 && tk=0 && tkmin=0
 done
-
+echo "$chaineRETOUR${chaineNONEXT:0:$[${#chaineNONEXT}-1]}"
 exit 0
