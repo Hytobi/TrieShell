@@ -8,7 +8,6 @@
 #initialisation       
 chaineNOM="$@"      # On récupère les noms des fichiers / dossier etc... 
 i=0 && j=0
-
 # (ordre : répertoire, fichier, liens, fichier spécial de type bloc, fichier spécial de type caractère, tube nommé, socket) 
 rep="" && fich="" && liens="" && bloc="" && carac="" && tube="" && socket=""
 

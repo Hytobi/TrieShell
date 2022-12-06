@@ -13,7 +13,7 @@
 chaineRETOUR=""
 
 #On doit recupérer tout ce qui est dans le repertoire
-chaineRETOUR=`stat -c "%n // " "$rep"/* 2> /dev/null` #si le dossier est vide il met une erreur: on s'en fou
+chaineRETOUR=`stat -c "%n // " "$rep"/* 2> /dev/null` #si le dossier est vide il met une erreur: on ne s'en préoccupe pas
 
 #On regard s'il y a d'autre dossier dans le repertoire
 nomRep=""
@@ -30,3 +30,4 @@ do
 done
 
 echo $chaineRETOUR
+exit 0

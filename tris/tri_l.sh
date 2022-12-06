@@ -10,24 +10,27 @@ chaineNOM="$@"      # On récupère les noms des fichiers / dossier etc...
 chaineINTER=""      # Cette chaine stock le nombre de ligne de chaque fichier
 rep=""              # Chaine qui contient seulement nos répertoires car ils n'ont pas de ligne
 
-#On recupère les noms du propriétaire ou la taille selon le tri
 i=0 && j=0
 # Tant qu'on a pas fini de parcourire la chaine
 while [ $i -lt ${#chaineNOM} ]
 do
     # Tant qu'on a pas de separateur on incremente i
     while [ "${chaineNOM:$i:3}" != " //" ] ; do i=$[$i+1] ; done
-    
+    # Si on a un repertoire
     if [ -d "${chaineNOM:$j:$[$i-$j]}" ] 
     then
+        # On ajoute le repertoire a la chaine rep
         rep="$rep${chaineNOM:$j:$[$i-$j]} // "
     else
+        # Sinon on ajoute le nombre de ligne et le nom du fichier a la chaine chaineINTER
         chaineINTER="$chaineINTER`wc -l "${chaineNOM:$j:$[$i-$j]}"` // "
     fi
     j=$[$i+4] && i=$[$i+3]
 done
+
 # On recupère le nombre de mot dans la chaine
 nbMot=`./util/compteMot.sh $chaineINTER`
+
 i=0 && j=0 && tkmin=0 && tk=0
 # Tant qu'on a pas recupere tout les mots
 while [ $nbMot -gt 0 ]
@@ -66,16 +69,16 @@ do
         # $j est la position de la premiere lettre du mot et $i la pos de la derniere
         mot=${chaineINTER:$j:$[$i-$j]}
 
-        # On compare le mot avec le mot plus petit
+        # On compare le la valeur de k avec celle de kmin
         if [ $k -lt $kmin ]
         then
-            #Si mot est plus petit alors on le sauvegarde
+            #Si k est plus petit alors on le sauvegarde
             kmin=$k && tkmin=$tk && motPlusPetit=$mot && iMin=$i && jMin=$j
         fi
         #on avance dans la chaine
         j=$[$i+4] && i=$[$i+4]
     done
-    # On suavegarde le mot plus petit dans la chaine de retour
+    # On suavegarde le mot en supprimant le nombre de ligne
     chaineRETOUR=$chaineRETOUR${motPlusPetit:$tkmin}" // "
     # On supprime le mot plus petit de la chaine
     chaineINTER=${chaineINTER:0:$jMin}${chaineINTER:$[$iMin+4]}
@@ -87,5 +90,4 @@ done
 
 # on affiche du plus petit au plu grand, on considère que les repertoires ont 0 ligne
 echo "$rep ${chaineRETOUR:0:$[${#chaineRETOUR}-1]}"
-
 exit 0
