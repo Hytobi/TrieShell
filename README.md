@@ -26,3 +26,5 @@
  6) Pour faire plusieurs tris l'odre de priorité sera du dernier paramètres au premier
 
  7) Toutes les fonctionnalités sont implémentées
+ 
+ 8) Très long mais fonctionne
