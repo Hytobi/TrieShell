@@ -12,9 +12,9 @@
 #initialisation
 chaineRETOUR=""     # La chaine qui sera retournée         
 chaineNOM="$@"      # On récupère les noms des fichiers / dossier etc... 
-chaineINTER=""      # Cette chaine stock les proprietaires (User/groupe) ou la taille selon le tri
+chaineINTER=""      # Cette chaine stock les proprietaires (User/groupe) ou la taille ou la date en seconde depuis le temps 0 de la machine selon le tri demandé
 
-mode="%${chaineNOM:0:1}"                # On recupère le mode : U G ou s selon le tri
+mode="%${chaineNOM:0:1}"                # On recupère le mode : U G s ou Y
 chaineNOM=${chaineNOM:1:${#chaineNOM}}  # On enleve le mode de la chaine
 
 # On recupère le nombre de mot dans la chaine

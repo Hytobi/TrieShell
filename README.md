@@ -21,4 +21,8 @@
    c'est pour cela qu'ils sont traité dans le même fichier de tri en rajoutant au début du parametre le mode
    on aurait pu passer à ce ficier deux parametres "option" et "chaine" mais c'etait moins amusant.
 
-5) On trie toujours du plus petit vers le plus grand
+ 5) On trie toujours du plus petit vers le plus grand
+
+ 6) Pour faire plusieurs tris l'odre de priorité sera du dernier paramètres au premier
+
+ 7) Toutes les fonctionnalités sont implémentées

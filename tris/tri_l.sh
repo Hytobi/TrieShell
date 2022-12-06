@@ -8,7 +8,7 @@
 chaineRETOUR=""     # La chaine qui sera retournée         
 chaineNOM="$@"      # On récupère les noms des fichiers / dossier etc... 
 chaineINTER=""      # Cette chaine stock le nombre de ligne de chaque fichier
-rep=""              # Chaine qui contient seulment nos répertoires car pas de ligne
+rep=""              # Chaine qui contient seulement nos répertoires car ils n'ont pas de ligne
 
 #On recupère les noms du propriétaire ou la taille selon le tri
 i=0 && j=0
