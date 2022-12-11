@@ -1,6 +1,6 @@
 # projetUNIX
 
- Trier en Shell
+ Trier en Shell sans utiliser de tableau, ni de fonction de triage
  
  Réaliseé par Patrick PLOUVIN et Patrice PLOUVIN 
  
